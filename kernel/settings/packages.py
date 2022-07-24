@@ -26,6 +26,7 @@ INSTALLED_APPS.append('admin_honeypot')
 # Security
 
 # Applications
+INSTALLED_APPS.append('entry')
 
 # ########### #
 #   UPLOAD    #
