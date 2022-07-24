@@ -49,7 +49,6 @@ class EntryFit(Entry):
 
         return data
 
-    @log_durations(logging.info)
     def __points_to_model_objs(self, df: pd.DataFrame) -> list:
         return [
             Point(
@@ -66,7 +65,6 @@ class EntryFit(Entry):
             ) for index, row in df.iterrows()
         ]
 
-    @log_durations(logging.info)
     def __laps_to_model_objs(self, df: pd.DataFrame) -> list:
         return [
             Lap(
@@ -83,13 +81,11 @@ class EntryFit(Entry):
         ]
 
     @staticmethod
-    @log_durations(logging.info)
     def __bulk_insert_points(points: list):
         """Bulk insert points"""
         Point.objects.bulk_create(points)
 
     @staticmethod
-    @log_durations(logging.info)
     def __bulk_insert_laps(laps: list):
         """Bulk insert laps"""
         Lap.objects.bulk_create(laps)
@@ -121,6 +117,7 @@ class EntryFit(Entry):
         points_df = pd.DataFrame(points_data, columns=self.__points_column_names)
         return laps_df, points_df
 
+    @log_durations(logging.info)
     def dataframe_to_model_objs(self, df: pd.DataFrame) -> list:
         """Dataframe to model objs"""
         if df.columns.tolist() == self.__points_column_names:
@@ -128,6 +125,7 @@ class EntryFit(Entry):
         else:
             return self.__laps_to_model_objs(df)
 
+    @log_durations(logging.info)
     def submit_model_objs_to_db(self, model_objs: list):
         """Submit model objs to db"""
         if isinstance(model_objs[0], Point):

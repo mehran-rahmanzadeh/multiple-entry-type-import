@@ -4,6 +4,8 @@ from typing import Dict, Union, Optional
 import lxml.etree
 import dateutil.parser as dp
 import pandas as pd
+from funcy import log_durations
+import logging
 
 from entry.models import Lap, Point
 from entry.services.entry_base import Entry
@@ -141,6 +143,7 @@ class EntryTcx(Entry):
         """Bulk insert laps"""
         Lap.objects.bulk_create(laps)
 
+    @log_durations(logging.info)
     def get_dataframe_from_file(self, file_path: str):
         """Get dataframe from file"""
         tree = lxml.etree.parse(file_path)
@@ -174,6 +177,7 @@ class EntryTcx(Entry):
 
         return laps_df, points_df
 
+    @log_durations(logging.info)
     def dataframe_to_model_objs(self, df: pd.DataFrame) -> list:
         """Dataframe to model objs"""
         if df.columns.tolist() == self.__points_column_names:
@@ -181,6 +185,7 @@ class EntryTcx(Entry):
         else:
             return self.__laps_to_model_objs(df)
 
+    @log_durations(logging.info)
     def submit_model_objs_to_db(self, model_objs: list):
         """Submit model objs to db"""
         if isinstance(model_objs[0], Point):

@@ -3,6 +3,8 @@ from entry.services.entry_base import Entry
 
 import pandas as pd
 import gpxpy
+from funcy import log_durations
+import logging
 
 
 class EntryGpx(Entry):
@@ -40,6 +42,7 @@ class EntryGpx(Entry):
 
         return data
 
+    @log_durations(logging.info)
     def get_dataframe_from_file(self, file_path: str):
         """Get dataframe from file"""
         with open(file_path) as f:
@@ -48,6 +51,7 @@ class EntryGpx(Entry):
         data = [self.__get_gpx_point_data(point) for point in segment.points]
         return pd.DataFrame(data, columns=self.__column_names)
 
+    @log_durations(logging.info)
     def dataframe_to_model_objs(self, df: pd.DataFrame):
         """Dataframe to model objs"""
         return [
@@ -63,6 +67,7 @@ class EntryGpx(Entry):
             ) for index, row in df.iterrows()
         ]
 
+    @log_durations(logging.info)
     def submit_model_objs_to_db(self, model_objs: list):
         """Submit model objs to db"""
         Point.objects.bulk_create(model_objs)
