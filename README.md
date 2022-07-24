@@ -17,7 +17,9 @@ cp docs/docker/settings.ini .
 docker compose up -d --build
 # or in older version: docker-compose up -d
 ```
-
+Possible issues:
+- if database does not exist error occurs, try to create `entry` database in `entry_postgres` container
+- if you can not log in to admin panel, try to create superuser in `entry_django` container
 ### Usage
 You can upload exported file in django admin panel `localhost:8000/secure/` (it can be implemented in API endpoints and other parts of project easily). Sample files are stored in `docs/dataset/` folder.
 
